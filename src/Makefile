@@ -1,8 +1,10 @@
 BIN = ../bin
  
  SOURCES = \
- *.sml \
- *.sig \
+ hp.sml \
+ hp.grm.sig \
+ hp.grm.sml \
+ hp.lex.sml \
  hp.mlb
   
    

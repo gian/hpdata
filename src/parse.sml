@@ -34,7 +34,7 @@ structure Main =
 struct
 	fun main () =
 	let val args = CommandLine.arguments ()
-	in (Parse.toXML (hd args, hd (tl args));()) end
+	in (Parse.toXML (hd args); ()) end
 	end
  
 val _ = Main.main ()
