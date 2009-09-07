@@ -7,7 +7,7 @@ BIN = ../bin
   
    
 .PHONY: all $(SOURCES)
-all: $(BIN)/lml
+all: $(BIN)/hpdata
 .PHONY: clean
 
 clean:
