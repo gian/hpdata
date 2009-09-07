@@ -82,7 +82,7 @@ seas_radii : seas_radii_line seas_radii		(seas_radii_line :: seas_radii)
 
 seas_radii_line: NUM FT SEAS GRIDREF GRIDREF GRIDREF GRIDREF (SeasRadii(NUM, GRIDREF1::GRIDREF2::GRIDREF3::GRIDREF4::[]))
 
-forecast_valid : FORECAST VALID TIME GRIDREF GRIDREF max_wind wind_radii seas_radii ([ForecastTrack (TIME,(GRIDREF,GRIDREF),max_wind @ wind_radii @ seas_radii)])
+forecast_valid : FORECAST VALID TIME GRIDREF GRIDREF max_wind wind_radii seas_radii ([ForecastTrack (TIME,(GRIDREF1,GRIDREF2),max_wind @ wind_radii @ seas_radii)])
 
 max_wind : MAX WIND NUM KT GUSTS NUM KT ([WindMax NUM1, GustMax NUM2])
          | 								([])

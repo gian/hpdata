@@ -20,4 +20,4 @@ hp.grm.sig hp.grm.sml hp.lex.sml: hp.grm hp.lex
 	mlyacc hp.grm
 	 
 $(BIN)/hpdata: $(SOURCES)
-	  mlton -output $(BIN)/hpdata hp.mlb
+	  mlton -link-opt "-static" -output $(BIN)/hpdata hp.mlb
