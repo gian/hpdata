@@ -1,0 +1,7 @@
+$(SML_LIB)/basis/basis.mlb
+$(MLTON_ROOT)/mlyacc-lib/mlyacc-lib.mlb
+hpdata.sml
+hp.lex.sml
+hp.grm.sig
+hp.grm.sml
+parse.sml

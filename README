@@ -1,0 +1,6 @@
+You will need mlton or SML/NJ to compile this.
+
+mlton:  run 'make' at the top level.  Binary should appear in 'bin'
+
+SML/NJ: Don't use 110.68 or 110.69 - ml-ulex is broken.  Use src/sources.cm
+

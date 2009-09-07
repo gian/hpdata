@@ -1,0 +1,94 @@
+(* Gian Perrone 2009 *)
+(* gian.perrone at gmail.com *)
+
+open HpData
+
+%%
+
+%name Hp
+
+%term FORECAST
+ | VALID
+ | REMNANT
+ | LOW
+ | INLAND
+ | DISSIPATING
+ | WIND
+ | KT
+ | FT
+ | MB
+ | ESTIMATED
+ | MINIMUM
+ | CENTRAL
+ | PRESSURE
+ | EYE
+ | SEAS
+ | DIAMETER
+ | NM
+ | MAX
+ | SUSTAINED
+ | WINDS
+ | WITH
+ | GUSTS
+ | TO
+ | GRIDREF of string
+ | TIME of string
+ | NUM of string
+ | ERROR of string
+ | EOF
+	  
+%nonterm atlfile of hpdata list
+	   | hpline of hpdatal
+	   | pressure_est of hpdatal
+	   | winds_gusts of hpdatal
+	   | wind_radii of hpdatal
+	   | wind_radii_line of hpdata
+	   | seas_radii of hpdatal
+	   | seas_radii_line of hpdata
+	   | max_wind of hpdatal
+	   | forecast_valid of hpdatal
+	   | error_line of hpdatal
+
+%pos int
+%verbose
+%start atlfile
+%eop EOF %noshift EOF
+
+%%
+
+atlfile: hpline atlfile						(hpline @ atlfile)
+       | 									([])
+
+hpline: pressure_est						(pressure_est)
+      | winds_gusts							(winds_gusts)
+	  | wind_radii							(wind_radii)
+	  | seas_radii							(seas_radii)
+	  | forecast_valid						(forecast_valid)
+	  | error_line							(error_line)
+
+pressure_est: ESTIMATED MINIMUM CENTRAL PRESSURE NUM MB ([CentralPressure NUM])
+
+winds_gusts: MAX SUSTAINED WINDS NUM KT WITH GUSTS TO NUM KT ([WindMax NUM1, GustMax NUM2])
+
+wind_radii : wind_radii_line wind_radii		(wind_radii_line :: wind_radii)
+           | wind_radii_line				([wind_radii_line])
+		   | 								([])
+
+wind_radii_line: NUM KT GRIDREF GRIDREF GRIDREF GRIDREF (WindRadii(NUM, GRIDREF1::GRIDREF2::GRIDREF3::GRIDREF4::[]))
+
+seas_radii : seas_radii_line seas_radii		(seas_radii_line :: seas_radii)
+           | seas_radii_line				([seas_radii_line])
+		   | 								([])
+
+seas_radii_line: NUM FT SEAS GRIDREF GRIDREF GRIDREF GRIDREF (SeasRadii(NUM, GRIDREF1::GRIDREF2::GRIDREF3::GRIDREF4::[]))
+
+forecast_valid : FORECAST VALID TIME GRIDREF GRIDREF max_wind wind_radii seas_radii ([ForecastTrack (TIME,(GRIDREF,GRIDREF),max_wind @ wind_radii @ seas_radii)])
+
+max_wind : MAX WIND NUM KT GUSTS NUM KT ([WindMax NUM1, GustMax NUM2])
+         | 								([])
+
+
+
+error_line : ERROR							([UnknownText ERROR])
+
+
